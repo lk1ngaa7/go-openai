@@ -266,6 +266,7 @@ type CompletionRequest struct {
 	Temperature     float32           `json:"temperature,omitempty"`
 	TopP            float32           `json:"top_p,omitempty"`
 	User            string            `json:"user,omitempty"`
+	PodHashId       string            `json:"pod_hash_id"`
 }
 
 // CompletionChoice represents one of possible completions.

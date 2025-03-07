@@ -27,7 +27,10 @@ func (c *Client) CreateCompletionStream(
 		err = ErrCompletionUnsupportedModel
 		return
 	}
-
+	if len(request.PodHashId) == 0 {
+		err = errors.New("pod hash id is null")
+		return
+	}
 	if !checkPromptType(request.Prompt) {
 		err = ErrCompletionRequestPromptTypeNotSupported
 		return
@@ -44,7 +47,7 @@ func (c *Client) CreateCompletionStream(
 		return nil, err
 	}
 
-	resp, err := sendRequestStream[CompletionResponse](c, req)
+	resp, err := sendRequestStream[CompletionResponse](c, req, request.PodHashId)
 	if err != nil {
 		return
 	}

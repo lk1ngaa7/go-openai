@@ -157,12 +157,13 @@ func (c *Client) sendRequestRaw(req *http.Request) (response RawResponse, err er
 	return
 }
 
-func sendRequestStream[T streamable](client *Client, req *http.Request) (*streamReader[T], error) {
+func sendRequestStream[T streamable](client *Client, req *http.Request, podHashId string) (*streamReader[T], error) {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "text/event-stream")
 	req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Connection", "keep-alive")
-
+	req.Header.Set("x-sticky-session-id", podHashId)
+	fmt.Println("req_pod_hash_id: " + podHashId)
 	resp, err := client.config.HTTPClient.Do(req) //nolint:bodyclose // body is closed in stream.Close()
 	if err != nil {
 		return new(streamReader[T]), err

@@ -2,6 +2,7 @@ package openai
 
 import (
 	"context"
+	"errors"
 	"net/http"
 )
 
@@ -78,7 +79,10 @@ func (c *Client) CreateChatCompletionStream(
 		err = ErrChatCompletionInvalidModel
 		return
 	}
-
+	if len(request.PodHashId) == 0 {
+		err = errors.New("pod hash id is null")
+		return
+	}
 	request.Stream = true
 	if err = validateRequestForO1Models(request); err != nil {
 		return
@@ -94,7 +98,7 @@ func (c *Client) CreateChatCompletionStream(
 		return nil, err
 	}
 
-	resp, err := sendRequestStream[ChatCompletionStreamResponse](c, req)
+	resp, err := sendRequestStream[ChatCompletionStreamResponse](c, req, request.PodHashId)
 	if err != nil {
 		return
 	}

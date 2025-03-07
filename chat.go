@@ -232,6 +232,7 @@ type ChatCompletionRequest struct {
 	Seed                *int                          `json:"seed,omitempty"`
 	FrequencyPenalty    float32                       `json:"frequency_penalty,omitempty"`
 	RepetitionPenalty   float32                       `json:"repetition_penalty,omitempty"`
+	PodHashId           string                        `json:"pod_hash_id"`
 	// LogitBias is must be a token id string (specified by their token ID in the tokenizer), not a word string.
 	// incorrect: `"logit_bias":{"You": 6}`, correct: `"logit_bias":{"1639": 6}`
 	// refs: https://platform.openai.com/docs/api-reference/chat/create#chat/create-logit_bias
